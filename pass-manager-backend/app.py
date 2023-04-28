@@ -5,6 +5,7 @@ from werkzeug.middleware.dispatcher import DispatcherMiddleware
 import json
 
 from mysql_db import AccountDAO, EmailDao, PhoneDao
+from RedisUtil.Mredis import Mredis
 
 bp = Blueprint('burritos', __name__,
                template_folder='templates')
@@ -12,6 +13,7 @@ bp = Blueprint('burritos', __name__,
 accountDao = AccountDAO()
 emailDao = EmailDao()
 phoneDao = PhoneDao()
+mredis = Mredis()
 
 
 @bp.route('/page', methods=['POST', 'GET'])
@@ -175,6 +177,12 @@ def phoneDel():
         "data": phoneDao.deleteById(id)
     }
     return Response(json.dumps(response), mimetype='application/json')
+
+
+@bp.route('/redis', methods=['POST', 'GET'])
+def redisSet():
+    
+    return mredis.str_get('test')
 
 
 app = Flask(__name__, static_url_path="/")
