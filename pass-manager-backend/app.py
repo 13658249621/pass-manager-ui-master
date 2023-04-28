@@ -178,10 +178,10 @@ def phoneDel():
     }
     return Response(json.dumps(response), mimetype='application/json')
 
-
+# redis
 @bp.route('/redis', methods=['POST', 'GET'])
 def redisSet():
-    
+
     return mredis.str_get('test')
 
 
