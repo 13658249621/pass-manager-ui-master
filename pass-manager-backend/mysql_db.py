@@ -52,6 +52,24 @@ class AccountDAO:
     # columns three list in db
     columns3 = "info, nickname, account, password, website, bind_email, bind_phone, comment"
 
+    # 查询绑定邮箱类型为qq邮箱的账号的昵称
+    def selectNicknameByEmailName(self, email_name):
+        conn = connect()
+        conn.ping(reconnect=True)
+        cursor = conn.cursor()
+        sql = "SELECT nickname,t_account.account FROM {} join t_email on t_account.account=t_email.account WHERE t_email.email_name = {}".format(
+            self.tablename, email_name)
+        print(sql)
+        cursor.execute(sql)
+        results = cursor.fetchall()
+        resultsList = []
+        for i in results:
+            resultsList.append({
+                'nickname': str(i[0]),
+                'account': str(i[1])
+            })
+        return resultsList
+
     def insert(self, account):
         conn = connect()
         conn.ping(reconnect=True)

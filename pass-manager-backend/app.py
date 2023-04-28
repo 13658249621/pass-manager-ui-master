@@ -33,6 +33,16 @@ def page():  # put application's code here
     return Response(json.dumps(response), mimetype='application/json')
 
 
+# 根据邮箱名称查询账号昵称
+@bp.route('/nicknameByEmailName', methods=['POST', 'GET'])
+def nicknameByEmailName():
+    response = {
+        "code": 200,
+        "data": accountDao.selectNicknameByEmailName(request.args.get('emailName'))
+    }
+    return Response(json.dumps(response), mimetype='application/json')
+
+
 @bp.route('/add', methods=['POST', 'GET'])
 def add():
     args = request.args
