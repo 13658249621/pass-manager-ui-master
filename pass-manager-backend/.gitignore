@@ -1,0 +1,31 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Environment directories
+.venv/
+env/
+venv/
+ENV/
+env.bak/
+env1/
+env2/
+env3/
+
+# Local development settings
+*.sqlite
+*.env
+
+# Logs and databases
+*.log
+*.sql
+*.db
+
+# Other
+*.swp
+.DS_Store
+.idea/
+.vscode/
+node_modules/
+bower_components/
