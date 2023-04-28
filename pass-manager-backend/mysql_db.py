@@ -102,12 +102,14 @@ class AccountDAO:
             # 发生错误时回滚
             conn.rollback()
 
+    # 分页查询
     def selectPage(self, limit, offset, q=''):
         sql = """SELECT {}
             FROM {} where info like '%{}%' or comment like '%{}%'
             limit {}, {}""".format(self.columns2, self.tablename, q, q, limit, offset)
         return self.executeSelectSql(sql)
 
+    # 查询总数
     def count(self, q=''):
         sql = """select count(1)
         FROM {} where info like '%{}%' or comment like '%{}%'
@@ -122,6 +124,7 @@ class AccountDAO:
         conn.commit()
         return int(results[0][0])
 
+    # 查询所有
     def selectAll(self):
         sql = """SELECT {}
             FROM {}
@@ -175,7 +178,28 @@ class EmailDao:
 
     columns1 = "create_time, update_time, email_name, account, password, website, comment"
     columns2 = "id, " + columns1
-    columns3 = "email_name, account, password, website, comment"   # 用于插入和更新
+    columns3 = "email_name, account, password, website, comment"  # 用于插入和更新
+
+    # 根据t_account表的account查询t_email表的email_name
+    def selectEmailNameByAccount(self, account):
+        sql = """SELECT email_name
+            FROM {} join t_account on t_account.account = t_email.account
+            where t_account.account = '{}'
+            """.format(self.table_name, account)
+        conn = connect()
+        conn.ping(reconnect=True)
+        # 使用cursor()方法获取操作游标
+        cursor = conn.cursor()
+        cursor.execute(sql)
+        results = cursor.fetchall()
+        resultsList = []
+        conn.commit()
+        for i in results:
+            resultsList.append({
+                'email_name': str(i[0])
+            })
+        return resultsList
+
     def list(self):
         sql = """SELECT {} FROM {};""".format(self.columns2, self.table_name)
         print(sql)

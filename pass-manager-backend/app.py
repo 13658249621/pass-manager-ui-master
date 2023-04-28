@@ -94,11 +94,13 @@ def emailList():
         "data": emailDao.list()
     }
     return Response(json.dumps(response), mimetype='application/json')
+
+
 @bp.route('/emailName', methods=['POST', 'GET'])
-def emaiName():
+def emailName():
     response = {
         "code": 200,
-        "data": emailDao.list()
+        "data": emailDao.selectEmailNameByAccount(request.args.get('account'))
     }
     return Response(json.dumps(response), mimetype='application/json')
 
@@ -171,4 +173,4 @@ CORS(app, supports_credentials=True)
 app.register_blueprint(bp, url_prefix='/api')
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=8900)
+    app.run(host='0.0.0.0', port=8901)
